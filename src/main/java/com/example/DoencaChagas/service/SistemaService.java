@@ -17,7 +17,7 @@ public class SistemaService {
     @Autowired
     private BancoDeDadosDAO bancoDeDadosDAO;
 
-    // Método que adiciona uma nova ocorrência da doença
+    // rtod que adiciona uma nova conciliator da doença
     public Paciente adicionarOcorrencia(Integer idade, String sexo, String faseDoenca,
             String formaClinica, String viaTransmissao,
             String statusPaciente, com.example.DoencaChagas.model.Cidade cidade) {
@@ -128,11 +128,11 @@ public class SistemaService {
                 .build();
     }
 
-    // Método que gera relatório de comparação entre duas cidades
+    // rtod que gera relatório de comparator entre duas cidades
     public List<EstatisticasCidadeDTO> gerarRelatorioComparacao(Integer idCidade1, Integer idCidade2) {
         List<EstatisticasCidadeDTO> comparacao = new java.util.ArrayList<>();
 
-        // Processa Cidade 1
+        // Process Cidade 1
         Cidade cidade1 = bancoDeDadosDAO.findCidadeById(idCidade1);
         if (cidade1 != null) {
             List<Paciente> pacientes1 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade1);
@@ -142,7 +142,7 @@ public class SistemaService {
             }
         }
 
-        // Processa Cidade 2
+        // Process Cidade 2
         Cidade cidade2 = bancoDeDadosDAO.findCidadeById(idCidade2);
         if (cidade2 != null) {
             List<Paciente> pacientes2 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade2);
@@ -155,7 +155,7 @@ public class SistemaService {
         return comparacao;
     }
 
-    // Método que gera relatório de todas as cidades num intervalo de tempo
+    // rtod que gera relatório de todas as cidades num intervalo de tempo
     public List<EstatisticasCidadeDTO> gerarRelatorioTodasCidades(java.time.LocalDate dataInicial, java.time.LocalDate dataFinal) {
         List<EstatisticasCidadeDTO> relatorioGeral = new java.util.ArrayList<>();
 
