@@ -1,0 +1,163 @@
+/* style.css */
+
+/* Paleta de Cores:
+   Fundo principal: #F4F7F6 (Cinza bem claro/gelo)
+   Fundo secundário: #FFFFFF (Branco)
+   Azul Primário: #0056B3 (Azul Saúde/Profundo)
+   Azul Secundário: #007BFF (Azul Claro/Ação)
+   Azul Terciário: #E6F0FA (Azul super claro para fundos/seleção)
+   Texto principal: #333333
+   Texto secundário: #666666
+   Aviso/Erro: #DC3545
+   Sucesso: #28A745
+*/
+
+.root {
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
+    -fx-background-color: #F4F7F6;
+    -fx-font-size: 14px;
+}
+
+/* Painéis e Containers */
+.sidebar {
+    -fx-background-color: #0056B3;
+    -fx-padding: 20px 0;
+}
+
+.sidebar .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20px 20px;
+}
+
+.content-pane {
+    -fx-background-color: #F4F7F6;
+    -fx-padding: 30px;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+/* Títulos */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0056B3;
+}
+
+.subtitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Botões do Menu Lateral */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: BASELINE_LEFT;
+    -fx-padding: 15px 20px;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #004494;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #003377;
+}
+
+/* Botões de Ação Principais */
+.action-button {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #0069D9;
+}
+
+.action-button:pressed {
+    -fx-background-color: #0056B3;
+}
+
+/* Campos de Texto (Inputs) */
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #007BFF;
+    -fx-border-width: 2px;
+}
+
+/* Tabelas (TableView) */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #E6F0FA;
+    -fx-border-color: #DDDDDD;
+    -fx-border-width: 0 1px 1px 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #0056B3;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #F9F9F9;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: white;
+}
+
+/* Labels e Textos Informativos */
+.info-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.info-value {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0056B3;
+}
+
+.error-label {
+    -fx-text-fill: #DC3545;
+    -fx-font-weight: bold;
+}
+
+.success-label {
+    -fx-text-fill: #28A745;
+    -fx-font-weight: bold;
+}
+
+/* Gráficos */
+.chart-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}

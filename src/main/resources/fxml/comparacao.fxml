@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="768.0" prefWidth="774.0" spacing="15.0" styleClass="card" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.DoencaChagas.controller.ComparacaoController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Label styleClass="title" text="Comparativo entre Cidades" />
+      
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label styleClass="subtitle" text="ID Cidade A:" />
+            <TextField fx:id="txtIdCidadeA" prefWidth="80.0" promptText="Ex: 1" styleClass="text-field" />
+            <Label styleClass="subtitle" text="ID Cidade B:" />
+            <TextField fx:id="txtIdCidadeB" prefWidth="80.0" promptText="Ex: 2" styleClass="text-field" />
+            <Button mnemonicParsing="false" onAction="#handleComparar" styleClass="action-button" text="Comparar" />
+         </children>
+      </HBox>
+      <Label fx:id="lblMensagem" styleClass="info-label" />
+
+      <GridPane hgap="15.0" styleClass="table-view" vgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label styleClass="chart-title" text="DADO" />
+            <Label fx:id="lblNomeA" styleClass="chart-title" text="CIDADE A" GridPane.columnIndex="1" />
+            <Label fx:id="lblNomeB" styleClass="chart-title" text="CIDADE B" GridPane.columnIndex="2" />
+            
+            <Label styleClass="info-label" text="População Total:" GridPane.rowIndex="1" />
+            <Label fx:id="lblPopA" styleClass="info-value" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="lblPopB" styleClass="info-value" text="-" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            
+            <Label styleClass="info-label" text="\% de Casos:" GridPane.rowIndex="2" />
+            <Label fx:id="lblPercA" styleClass="info-value" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lblPercB" styleClass="info-value" text="-" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            
+            <Label styleClass="info-label" text="Taxa de Mortalidade:" GridPane.rowIndex="3" />
+            <Label fx:id="lblMortA" styleClass="info-value" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="lblMortB" styleClass="info-value" text="-" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </GridPane>
+
+      <BarChart fx:id="barChart" VBox.vgrow="ALWAYS">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </children>
+</VBox>

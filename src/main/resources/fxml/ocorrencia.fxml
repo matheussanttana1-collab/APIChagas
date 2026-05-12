@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600.0" prefWidth="700.0" spacing="20.0" styleClass="card" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.DoencaChagas.controller.OcorrenciaController">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   <children>
+      <Label styleClass="title" text="Nova Ocorrência" />
+      <Label styleClass="info-label" text="Preencha os dados do paciente para registrar uma nova ocorrência de Doença de Chagas." wrapText="true" />
+      <GridPane hgap="15.0" vgap="15.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label styleClass="subtitle" text="Idade:" />
+            <TextField fx:id="txtIdade" promptText="Ex: 45" styleClass="text-field" GridPane.columnIndex="1" />
+            
+            <Label styleClass="subtitle" text="Sexo:" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbSexo" prefWidth="150.0" promptText="Selecione" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label styleClass="subtitle" text="Fase da Doença:" GridPane.rowIndex="2" />
+            <TextField fx:id="txtFaseDoenca" promptText="Ex: Aguda, Crônica" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <Label styleClass="subtitle" text="Forma Clínica:" GridPane.rowIndex="3" />
+            <TextField fx:id="txtFormaClinica" promptText="Ex: Indeterminada, Cardíaca" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+            <Label styleClass="subtitle" text="Via de Transmissão:" GridPane.rowIndex="4" />
+            <TextField fx:id="txtViaTransmissao" promptText="Ex: Vetorial, Oral" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            
+            <Label styleClass="subtitle" text="Status do Paciente:" GridPane.rowIndex="5" />
+            <ComboBox fx:id="cbStatusPaciente" prefWidth="150.0" promptText="Selecione" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            
+            <Label styleClass="subtitle" text="ID da Cidade:" GridPane.rowIndex="6" />
+            <TextField fx:id="txtIdCidade" promptText="Ex: 1" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
+      <Button mnemonicParsing="false" onAction="#handleSalvar" prefHeight="40.0" prefWidth="150.0" styleClass="action-button" text="Salvar Ocorrência" />
+      <Label fx:id="lblMensagem" styleClass="info-label" text="" />
+   </children>
+</VBox>

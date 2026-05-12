@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="768.0" prefWidth="774.0" spacing="15.0" styleClass="card" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.DoencaChagas.controller.ListarCidadesController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Label styleClass="title" text="Cidades Cadastradas" />
+      
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleAtualizar" styleClass="action-button" text="Atualizar Lista" />
+         </children>
+      </HBox>
+      <Label fx:id="lblMensagem" styleClass="info-label" />
+
+      <TableView fx:id="tableCidades" prefHeight="400.0" prefWidth="734.0" styleClass="table-view" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="100.0" text="ID" />
+          <TableColumn fx:id="colNome" prefWidth="400.0" text="Nome da Cidade" />
+          <TableColumn fx:id="colPopulacao" prefWidth="200.0" text="População" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
