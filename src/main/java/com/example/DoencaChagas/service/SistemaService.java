@@ -17,10 +17,18 @@ public class SistemaService {
     @Autowired
     private BancoDeDadosDAO bancoDeDadosDAO;
 
-    // rtod que adiciona uma nova conciliator da doença
     public Paciente adicionarOcorrencia(Integer idade, String sexo, String faseDoenca,
             String formaClinica, String viaTransmissao,
-            String statusPaciente, com.example.DoencaChagas.model.Cidade cidade) {
+            String statusPaciente, Integer idCidade) {
+
+        if (idCidade == null) {
+            throw new IllegalArgumentException("O ID da cidade não pode ser nulo.");
+        }
+
+        Cidade cidade = bancoDeDadosDAO.findCidadeById(idCidade);
+        if (cidade == null) {
+            throw new IllegalArgumentException("Cidade não encontrada com o ID: " + idCidade);
+        }
 
         if (idade == null) {
             throw new IllegalArgumentException("A idade não pode ser nula.");
@@ -40,9 +48,6 @@ public class SistemaService {
         if (statusPaciente == null || statusPaciente.trim().isEmpty()) {
             throw new IllegalArgumentException("O status do paciente não pode ser nulo ou vazio.");
         }
-        if (cidade == null) {
-            throw new IllegalArgumentException("A cidade não pode ser nula.");
-        }
 
         Paciente novoPaciente = Paciente.builder()
                 .idade(idade)
@@ -60,13 +65,17 @@ public class SistemaService {
     }
 
     public RelatorioCidadeDTO gerarRelatorioCidade(Integer idCidade, Integer quantidade) {
+        if (idCidade == null) {
+            throw new IllegalArgumentException("O ID da cidade não pode ser nulo.");
+        }
+
         if (quantidade == null || quantidade <= 0) {
             quantidade = 20;
         }
 
         Cidade cidade = bancoDeDadosDAO.findCidadeById(idCidade);
         if (cidade == null) {
-            throw new RuntimeException("Cidade não encontrada com o ID: " + idCidade);
+            throw new IllegalArgumentException("Cidade não encontrada com o ID: " + idCidade);
         }
 
         List<Paciente> pacientes = bancoDeDadosDAO.findByCidade_IdCidade(idCidade, PageRequest.of(0, quantidade));
@@ -128,50 +137,58 @@ public class SistemaService {
                 .build();
     }
 
-    // rtod que gera relatório de comparator entre duas cidades
     public List<EstatisticasCidadeDTO> gerarRelatorioComparacao(Integer idCidade1, Integer idCidade2) {
+        if (idCidade1 == null || idCidade2 == null) {
+            throw new IllegalArgumentException("O ID das cidades não podem ser nulos.");
+        }
+
+        Cidade cidade1 = bancoDeDadosDAO.findCidadeById(idCidade1);
+        if (cidade1 == null) {
+            throw new IllegalArgumentException("Cidade não encontrada com o ID: " + idCidade1);
+        }
+
+        Cidade cidade2 = bancoDeDadosDAO.findCidadeById(idCidade2);
+        if (cidade2 == null) {
+            throw new IllegalArgumentException("Cidade não encontrada com o ID: " + idCidade2);
+        }
+
         List<EstatisticasCidadeDTO> comparacao = new java.util.ArrayList<>();
 
         // Process Cidade 1
-        Cidade cidade1 = bancoDeDadosDAO.findCidadeById(idCidade1);
-        if (cidade1 != null) {
-            List<Paciente> pacientes1 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade1);
-            if (pacientes1 != null && !pacientes1.isEmpty()) {
-                long totalCasos1 = pacientes1.size();
-                comparacao.add(calcularEstatisticas(cidade1, pacientes1, totalCasos1));
-            }
+        List<Paciente> pacientes1 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade1);
+        if (pacientes1 != null && !pacientes1.isEmpty()) {
+            long totalCasos1 = pacientes1.size();
+            comparacao.add(calcularEstatisticas(cidade1, pacientes1, totalCasos1));
+        } else {
+            comparacao.add(EstatisticasCidadeDTO.builder().cidade(cidade1).build());
         }
 
         // Process Cidade 2
-        Cidade cidade2 = bancoDeDadosDAO.findCidadeById(idCidade2);
-        if (cidade2 != null) {
-            List<Paciente> pacientes2 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade2);
-            if (pacientes2 != null && !pacientes2.isEmpty()) {
-                long totalCasos2 = pacientes2.size();
-                comparacao.add(calcularEstatisticas(cidade2, pacientes2, totalCasos2));
-            }
+        List<Paciente> pacientes2 = bancoDeDadosDAO.findByCidade_IdCidade(idCidade2);
+        if (pacientes2 != null && !pacientes2.isEmpty()) {
+            long totalCasos2 = pacientes2.size();
+            comparacao.add(calcularEstatisticas(cidade2, pacientes2, totalCasos2));
+        } else {
+            comparacao.add(EstatisticasCidadeDTO.builder().cidade(cidade2).build());
         }
 
         return comparacao;
     }
 
-    // rtod que gera relatório de todas as cidades num intervalo de tempo
     public List<EstatisticasCidadeDTO> gerarRelatorioTodasCidades(java.time.LocalDate dataInicial, java.time.LocalDate dataFinal) {
         List<EstatisticasCidadeDTO> relatorioGeral = new java.util.ArrayList<>();
 
-        // Buscar todas as cidades
         List<Cidade> todasCidades = bancoDeDadosDAO.findAllCidades();
 
         if (todasCidades != null) {
             for (Cidade cidade : todasCidades) {
-                // Para cada cidade, buscar pacientes no intervalo
+                // Aqui a cidade veio do banco, então já existe.
                 List<Paciente> pacientes = bancoDeDadosDAO.findByCidade_IdCidadeAndDataRegistroBetween(cidade.getIdCidade(), dataInicial, dataFinal);
                 
                 if (pacientes != null && !pacientes.isEmpty()) {
                     long totalCasosNoPeriodo = pacientes.size();
                     relatorioGeral.add(calcularEstatisticas(cidade, pacientes, totalCasosNoPeriodo));
                 } else {
-                    // Se não tiver paciente no período, cria um DTO zerado
                     relatorioGeral.add(EstatisticasCidadeDTO.builder()
                             .cidade(cidade)
                             .percentualCasos(0.0)
