@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="768.0" prefWidth="774.0" spacing="16.0" styleClass="card"
+      stylesheets="@../css/style.css"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.DoencaChagas.controller.GerarPdfController">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   <children>
+
+      <!-- Título -->
+      <Label styleClass="title" text="📄 Gerar Relatório PDF" />
+      <Label styleClass="subtitle" text="Selecione o tipo de relatório e preencha os parâmetros necessários." />
+
+      <Separator />
+
+      <!-- Seleção do tipo de relatório -->
+      <HBox alignment="CENTER_LEFT" spacing="12.0">
+         <children>
+            <Label minWidth="170.0" styleClass="subtitle" text="Tipo de Relatório:" />
+            <ComboBox fx:id="cbTipoRelatorio" prefWidth="320.0"
+                      promptText="Selecione o relatório..."
+                      onAction="#handleTipoRelatorioChanged" />
+         </children>
+      </HBox>
+
+      <!-- ── Parâmetros condicionais ── -->
+
+      <!-- ID de uma cidade (relatório individual) -->
+      <HBox fx:id="hboxIdCidade" alignment="CENTER_LEFT" spacing="12.0"
+            visible="false" managed="false">
+         <children>
+            <Label minWidth="170.0" styleClass="subtitle" text="ID da Cidade:" />
+            <TextField fx:id="txtIdCidade" prefWidth="160.0" promptText="Ex: 1" />
+         </children>
+      </HBox>
+
+      <!-- IDs de duas cidades (relatórios comparativos) -->
+      <HBox fx:id="hboxDuasCidades" alignment="CENTER_LEFT" spacing="12.0"
+            visible="false" managed="false">
+         <children>
+            <Label minWidth="170.0" styleClass="subtitle" text="ID Cidade 1:" />
+            <TextField fx:id="txtCidade1Id" prefWidth="120.0" promptText="Ex: 1" />
+            <Label styleClass="subtitle" text="ID Cidade 2:" />
+            <TextField fx:id="txtCidade2Id" prefWidth="120.0" promptText="Ex: 2" />
+         </children>
+      </HBox>
+
+      <Separator />
+
+      <!-- Botão de ação -->
+      <HBox alignment="CENTER_LEFT" spacing="12.0">
+         <children>
+            <Button fx:id="btnGerarPdf" mnemonicParsing="false"
+                    onAction="#handleGerarPdf"
+                    styleClass="action-button"
+                    text="🖨  Gerar PDF"
+                    prefWidth="200.0" prefHeight="42.0"
+                    disable="true" />
+         </children>
+      </HBox>
+
+      <!-- Mensagem de status -->
+      <Label fx:id="lblMensagem" styleClass="info-label" wrapText="true" />
+
+      <!-- Espaçador -->
+      <Region VBox.vgrow="ALWAYS" />
+
+      <!-- Dica informativa -->
+      <VBox spacing="6.0"
+            style="-fx-background-color: #1e2d40; -fx-border-color: #2a9d8f; -fx-border-width: 1; -fx-border-radius: 6; -fx-background-radius: 6;">
+         <padding>
+            <Insets bottom="12.0" left="14.0" right="14.0" top="12.0" />
+         </padding>
+         <children>
+            <Label text="ℹ  Relatórios disponíveis" style="-fx-text-fill: #2a9d8f; -fx-font-weight: bold;" />
+            <Label wrapText="true" style="-fx-text-fill: #adb5bd; -fx-font-size: 12;"
+                   text="• Individual de Cidade — requer ID da cidade&#10;• Geral — sem parâmetros (todos os pacientes)&#10;• Comparativo por Faixa Etária — requer 2 IDs de cidades&#10;• Comparativo por Data de Coleta — requer 2 IDs de cidades&#10;&#10;O PDF gerado será salvo na pasta 'relatorios/' e aberto automaticamente." />
+         </children>
+      </VBox>
+
+   </children>
+</VBox>
