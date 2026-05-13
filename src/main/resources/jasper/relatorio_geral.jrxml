@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_geral_chagas" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="d4d9c28e-bcef-4db7-9fd2-72a4d5126289">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="TitleStyle" forecolor="#003366" fontSize="18" isBold="true"/>
+	<style name="CardTitle" forecolor="#FFFFFF" fontSize="12" isBold="true"/>
+	<style name="LabelStyle" forecolor="#333333" fontSize="10" isBold="true"/>
+	<style name="ValueStyle" forecolor="#000000" fontSize="10"/>
+	<style name="CardValueStyle" forecolor="#FFFFFF" fontSize="14" isBold="true"/>
+	<style name="CardLegendStyle" forecolor="#FFFFFF" fontSize="9" isBold="true"/>
+	<queryString>
+		<![CDATA[SELECT
+			COUNT(*) as total_pacientes,
+			SUM(CASE WHEN status_paciente='CONFIRMADO' THEN 1 ELSE 0 END) as confirmados,
+			SUM(CASE WHEN status_paciente='SUSPEITO' THEN 1 ELSE 0 END) as suspeitos,
+			SUM(CASE WHEN status_paciente='RECUPERADO' THEN 1 ELSE 0 END) as recuperados,
+			SUM(CASE WHEN status_paciente='OBITO' THEN 1 ELSE 0 END) as obitos,
+			ROUND(AVG(idade), 1) as media_idade,
+			MIN(idade) as idade_minima,
+			MAX(idade) as idade_maxima,
+			SUM(CASE WHEN sexo='M' THEN 1 ELSE 0 END) as total_masculino,
+			SUM(CASE WHEN sexo='F' THEN 1 ELSE 0 END) as total_feminino,
+			SUM(CASE WHEN fase_doenca='AGUDA' THEN 1 ELSE 0 END) as fase_aguda,
+			SUM(CASE WHEN fase_doenca='CRONICA' THEN 1 ELSE 0 END) as fase_cronica,
+			SUM(CASE WHEN forma_clinica='CARDIACA' THEN 1 ELSE 0 END) as forma_cardiaca,
+			SUM(CASE WHEN forma_clinica='DIGESTIVA' THEN 1 ELSE 0 END) as forma_digestiva,
+			SUM(CASE WHEN forma_clinica='INDETERMINADA' THEN 1 ELSE 0 END) as forma_indeterminada,
+			SUM(CASE WHEN forma_clinica='MISTA' THEN 1 ELSE 0 END) as forma_mista,
+			SUM(CASE WHEN via_transmissao='VETORIAL' THEN 1 ELSE 0 END) as via_vetorial,
+			SUM(CASE WHEN via_transmissao='ORAL' THEN 1 ELSE 0 END) as via_oral,
+			SUM(CASE WHEN via_transmissao='VERTICAL' THEN 1 ELSE 0 END) as via_vertical,
+			SUM(CASE WHEN via_transmissao='TRANSFUSIONAL' THEN 1 ELSE 0 END) as via_transfusional
+		FROM pacientes]]>
+	</queryString>
+	<field name="total_pacientes" class="java.lang.Long"/>
+	<field name="confirmados" class="java.math.BigDecimal"/>
+	<field name="suspeitos" class="java.math.BigDecimal"/>
+	<field name="recuperados" class="java.math.BigDecimal"/>
+	<field name="obitos" class="java.math.BigDecimal"/>
+	<field name="media_idade" class="java.math.BigDecimal"/>
+	<field name="idade_minima" class="java.lang.Integer"/>
+	<field name="idade_maxima" class="java.lang.Integer"/>
+	<field name="total_masculino" class="java.math.BigDecimal"/>
+	<field name="total_feminino" class="java.math.BigDecimal"/>
+	<field name="fase_aguda" class="java.math.BigDecimal"/>
+	<field name="fase_cronica" class="java.math.BigDecimal"/>
+	<field name="forma_cardiaca" class="java.math.BigDecimal"/>
+	<field name="forma_digestiva" class="java.math.BigDecimal"/>
+	<field name="forma_indeterminada" class="java.math.BigDecimal"/>
+	<field name="forma_mista" class="java.math.BigDecimal"/>
+	<field name="via_vetorial" class="java.math.BigDecimal"/>
+	<field name="via_oral" class="java.math.BigDecimal"/>
+	<field name="via_vertical" class="java.math.BigDecimal"/>
+	<field name="via_transfusional" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement style="TitleStyle" x="0" y="10" width="575" height="30" uuid="936c38b7-5ba7-4b95-b9b6-18c68dbe0656"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[RELATÓRIO GERAL VALIDADO - DOENÇA DE CHAGAS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="45" width="575" height="1" forecolor="#003366" uuid="4fdbc362-564b-425e-9c0c-fa480502fcab"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="715">
+			<rectangle>
+				<reportElement x="0" y="0" width="575" height="30" backcolor="#003366" uuid="1464d810-9ac0-4ed0-8c8f-d21998fcc56e"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="6" width="300" height="18" uuid="cd54325f-80d6-4dc9-9098-d2a93bfa3395"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[RESUMO GERAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="35" width="160" height="18" uuid="3fd5a4d3-dfac-4843-96c2-9722c70ca697"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Total de Pacientes Validados:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="35" width="80" height="18" uuid="c6fc2de4-85db-4ea7-b1d2-193d41465d1b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_pacientes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="55" width="160" height="18" uuid="e19dd120-7de5-409d-8234-9e8374fc2a4f"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Idade Média:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="55" width="80" height="18" uuid="a2309a2a-2557-470a-bfae-440f74953ae9"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{media_idade} + " anos"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="35" width="100" height="18" uuid="79242f56-529f-4337-983e-52be65b38f2c"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Idade Mínima:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="35" width="80" height="18" uuid="c3f9c4eb-5970-4533-bf1c-8a549d7598ef"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{idade_minima} + " anos"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="55" width="100" height="18" uuid="48a67075-4526-4033-aec4-2890c9a77a51"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Idade Máxima:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="55" width="80" height="18" uuid="df2aceac-e77c-4cb2-aef5-869545771d3c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{idade_maxima} + " anos"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="80" width="575" height="30" backcolor="#003366" uuid="6fd12726-4e26-4ec0-840a-15f0e8d8487a"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="86" width="300" height="18" uuid="f4088731-d173-4785-bbad-42245989870f"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[STATUS DOS PACIENTES VALIDADOS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="10" y="120" width="110" height="80" backcolor="#28A745" uuid="356d162c-df2c-4938-a181-acad4ac0fd2f"/>
+			</rectangle>
+			<textField>
+				<reportElement style="CardValueStyle" x="10" y="130" width="110" height="25" uuid="646829b0-7190-4a87-b32a-18c5bc5279bd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{confirmados}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLegendStyle" x="10" y="160" width="110" height="30" uuid="c316c3d0-74f8-43a9-9c30-024dcf2240e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Confirmados]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="130" y="120" width="110" height="80" backcolor="#FFC107" uuid="b1bbb2d3-6ec2-4e31-aa68-7c9b801b11a9"/>
+			</rectangle>
+			<textField>
+				<reportElement style="CardValueStyle" x="130" y="130" width="110" height="25" uuid="299e015e-9b44-48d8-8c88-d02945d1371b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{suspeitos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLegendStyle" x="130" y="160" width="110" height="30" uuid="c0ff3d5f-ef82-490f-8bec-91c9be584ed4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Suspeitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="250" y="120" width="110" height="80" backcolor="#17A2B8" uuid="2a7c160e-6576-4df7-ad38-c885e1081647"/>
+			</rectangle>
+			<textField>
+				<reportElement style="CardValueStyle" x="250" y="130" width="110" height="25" uuid="e5c705b7-7961-47f8-a663-1a85ad181ed0"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{recuperados}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLegendStyle" x="250" y="160" width="110" height="30" uuid="dfcfd3c4-f5b9-41a0-81c6-b0daaadb783f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Recuperados]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="370" y="120" width="110" height="80" backcolor="#DC3545" uuid="cde0e36f-93d2-427e-87a2-17098c316c29"/>
+			</rectangle>
+			<textField>
+				<reportElement style="CardValueStyle" x="370" y="130" width="110" height="25" uuid="f442989d-cae3-45ae-944c-a50e16790174"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{obitos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLegendStyle" x="370" y="160" width="110" height="30" uuid="1043699b-33fb-4eb6-8bd0-89bfebe134af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Óbitos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="490" y="120" width="85" height="80" backcolor="#6F42C1" uuid="dcabd3f1-6454-4222-8b9e-1001ff4b33f6"/>
+			</rectangle>
+			<textField>
+				<reportElement style="CardValueStyle" x="490" y="130" width="85" height="25" uuid="f22992a7-f673-4df1-819b-6861f38adb16"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("0.0").format(($F{obitos}.doubleValue() / $F{total_pacientes}.doubleValue() * 100)) + "%"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLegendStyle" x="490" y="160" width="85" height="30" uuid="8317b7f0-25a1-48ef-906e-eadd4e857594"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Taxa Mortal.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="210" width="575" height="30" backcolor="#003366" uuid="b446c001-856e-466b-acf3-2a21a8dbe9c5"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="216" width="300" height="18" uuid="bf5f66fe-1e43-4d0c-b093-9123dcb8143d"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[DADOS DEMOGRÁFICOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="245" width="160" height="18" uuid="0f6560b9-27e4-41f1-8bac-71bdb06dc2f2"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Sexo Masculino:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="245" width="150" height="18" uuid="358adbc2-2e71-4fbc-83ec-457304457194"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_masculino} + " (" + new java.text.DecimalFormat("0").format(($F{total_masculino}.doubleValue() / $F{total_pacientes}.doubleValue() * 100)) + "%)"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="265" width="160" height="18" uuid="0cca1144-caf3-4cbe-8456-ab9d6335d935"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Sexo Feminino:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="265" width="150" height="18" uuid="d0cf77c3-e090-4830-9a20-74fbf36631d5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_feminino} + " (" + new java.text.DecimalFormat("0").format(($F{total_feminino}.doubleValue() / $F{total_pacientes}.doubleValue() * 100)) + "%)"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="295" width="575" height="30" backcolor="#003366" uuid="6c1890c9-d455-4fe6-b4d7-f0ed354d83c7"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="301" width="300" height="18" uuid="bd368c74-db58-4f40-a7a6-c6fab6740177"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[FASE DA DOENÇA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="330" width="160" height="18" uuid="98522a30-11fb-4d99-9739-932b7038b6b3"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Fase Aguda:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="330" width="80" height="18" uuid="1344a265-cac6-419a-9092-0b19e1f8f938"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fase_aguda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="330" width="100" height="18" uuid="efb0bd9c-6e92-46ca-893a-f595073acb79"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Fase Crônica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="330" width="80" height="18" uuid="bf1d7603-a3e9-48e3-988a-ccbab6442617"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{fase_cronica}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="360" width="575" height="30" backcolor="#003366" uuid="a8d856f1-c536-4652-a2dc-f30fb041b3a4"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="366" width="300" height="18" uuid="ff679c56-b6f5-4cc2-a244-fa6cd9139b21"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[FORMA CLÍNICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="395" width="160" height="18" uuid="ca877d3f-0a6f-4c84-93de-393def576496"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Forma Cardíaca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="395" width="80" height="18" uuid="ba321c22-bb55-496a-9d9b-16893652f0c6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{forma_cardiaca}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="395" width="100" height="18" uuid="f4c7c264-6e37-45c8-b6fe-dff7cf4caccc"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Forma Digestiva:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="395" width="80" height="18" uuid="ff1d0bac-aba4-4f5e-9a5b-d9dfa0b190e6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{forma_digestiva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="415" width="160" height="18" uuid="d5bacdf0-f921-4459-97a2-db040d8956a1"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Forma Indeterminada:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="415" width="80" height="18" uuid="7ef63d75-dbd2-4b70-9582-d4f20fcf7ecc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{forma_indeterminada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="415" width="100" height="18" uuid="1f199b2c-d593-4451-a1d7-377bf798f434"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Forma Mista:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="415" width="80" height="18" uuid="b03027ca-d8a7-4655-ab70-7824f78b218f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{forma_mista}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="445" width="575" height="30" backcolor="#003366" uuid="b146b71a-6b25-4e5c-a912-a3d10506a1d4"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="CardTitle" x="10" y="451" width="300" height="18" uuid="74d552d5-3dfd-4da7-8443-8201113b6cf4"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[VIA DE TRANSMISSÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="480" width="160" height="18" uuid="8460e1bd-e19f-4f57-b233-1a7de7097ed1"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Via Vetorial:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="480" width="80" height="18" uuid="02b51246-6016-4ea7-a149-e659f159509b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{via_vetorial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="480" width="100" height="18" uuid="c2d37558-0c56-4fbb-b315-da0629333a75"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Via Oral:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="480" width="80" height="18" uuid="8fdaf03c-6183-46d4-8ab6-c0f9bd13dbd8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{via_oral}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="10" y="500" width="160" height="18" uuid="12ac6b1a-8017-4552-8315-60c253616d0d"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Via Vertical:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="180" y="500" width="80" height="18" uuid="17798576-f7a9-4b07-a7be-ac165a670f38"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{via_vertical}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LabelStyle" x="310" y="500" width="100" height="18" uuid="290514f5-e009-4b7c-8d5a-2ebd64fb0ca8"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Via Transfusional:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="ValueStyle" x="420" y="500" width="80" height="18" uuid="1de55c6d-b9c5-4d98-b4cf-db4afdd7e7de"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{via_transfusional}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<line>
+				<reportElement x="0" y="5" width="575" height="1" forecolor="#003366" uuid="3685a84e-0b4a-4b08-86c7-6c634832d3f5"/>
+			</line>
+			<textField>
+				<reportElement style="ValueStyle" x="0" y="10" width="575" height="15" uuid="10545362-aa40-4525-87bb-6fec93a1f909"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Relatório gerado em " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

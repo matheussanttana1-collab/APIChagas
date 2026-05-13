@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pacientes_subreport" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8e2a31df-f42b-4f12-b535-4dce7e6a3557">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="TableHeaderStyle" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" isBold="true"/>
+	<style name="TableCellStyle" forecolor="#000000" fontSize="8"/>
+	<parameter name="ID_CIDADE" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+    p.id_paciente,
+    p.idade,
+    p.sexo,
+    p.fase_doenca,
+    p.forma_clinica,
+    p.via_transmissao,
+    p.status_paciente
+FROM pacientes p
+WHERE p.id_cidade = $P{ID_CIDADE}]]>
+	</queryString>
+	<field name="id_paciente" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idade" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fase_doenca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="forma_clinica" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="via_transmissao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status_paciente" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="22">
+			<rectangle>
+				<reportElement x="0" y="0" width="50" height="22" backcolor="#003366" uuid="86e52e70-c103-45e2-b0d0-8d5f939e73fe"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="0" y="0" width="50" height="22" uuid="f32ff0f6-2be3-44a3-a6fc-6baa8a43d82d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="50" y="0" width="45" height="22" backcolor="#003366" uuid="9e6d7f60-90f6-4e49-b862-dc7879ec1529"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="50" y="0" width="45" height="22" uuid="a26e1289-13ed-4216-a8b6-2ba02bf4799e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Idade]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="95" y="0" width="35" height="22" backcolor="#003366" uuid="72fc377b-7858-4381-b05f-056a9112fd8c"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="95" y="0" width="35" height="22" uuid="16ba19f1-119d-4fba-a533-45b70818c4be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="130" y="0" width="70" height="22" backcolor="#003366" uuid="61a7ba54-70fd-487a-80a4-af1b1f82a095"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="130" y="0" width="70" height="22" uuid="41333e5f-7caf-441e-81ba-06d8738d6d86"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fase]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="200" y="0" width="85" height="22" backcolor="#003366" uuid="205c47ba-1e5a-428f-a74a-22c811f10143"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="200" y="0" width="85" height="22" uuid="ec7a5a4a-708d-4401-a3aa-82c05da59abf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Forma Clínica]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="285" y="0" width="90" height="22" backcolor="#003366" uuid="361fc718-e459-4eb5-915f-411f38558dd4"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="285" y="0" width="90" height="22" uuid="f4b4d74d-d741-47df-a7a1-2732416d19c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Via Transmissão]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="375" y="0" width="80" height="22" backcolor="#003366" uuid="4a6a8255-f894-45ec-8735-e6878b03e13d"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TableHeaderStyle" x="375" y="0" width="80" height="22" uuid="67c99aa3-e4d5-4263-93ac-3e38f263910b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="0" width="50" height="20" backcolor="#F5F5F5" uuid="b853bf27-0593-4618-9917-26796607615f"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="0" y="0" width="50" height="20" uuid="d1061922-8fa6-407c-b97a-07a5f45501f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_paciente}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="50" y="0" width="45" height="20" backcolor="#F5F5F5" uuid="88169fc5-e79f-40f0-919b-69c58ebb1e3e"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="50" y="0" width="45" height="20" uuid="e4c911d0-e9ed-4d55-8619-be198db01885"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idade}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="95" y="0" width="35" height="20" backcolor="#F5F5F5" uuid="65698f24-5923-4e3c-b4ce-46cd669e7f35"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="95" y="0" width="35" height="20" uuid="2c1598f7-f013-4612-a54e-b4bbaa812da8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="130" y="0" width="70" height="20" backcolor="#F5F5F5" uuid="775ca346-fefb-428a-b648-26846d73f5d6"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="130" y="0" width="70" height="20" uuid="d076e886-1ddd-4e2b-a935-e72f0382ccf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fase_doenca}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="200" y="0" width="85" height="20" backcolor="#F5F5F5" uuid="312ffd5e-1662-427c-bab3-f5f822f6e96b"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="200" y="0" width="85" height="20" uuid="b727e085-103f-4faa-9a10-4c6915c2d534"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{forma_clinica}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="285" y="0" width="90" height="20" backcolor="#F5F5F5" uuid="b8e1b571-0176-4582-a075-aa819b519f38"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="285" y="0" width="90" height="20" uuid="4f1aa657-159e-4837-9832-6f7d829e14c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{via_transmissao}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="375" y="0" width="80" height="20" backcolor="#F5F5F5" uuid="38bd58a1-35ff-438a-86b2-777a32522784"/>
+			</rectangle>
+			<textField>
+				<reportElement style="TableCellStyle" x="375" y="0" width="80" height="20" uuid="365358f0-f5ef-4334-8970-1948f508cbfe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{status_paciente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<noData>
+		<band height="30">
+			<staticText>
+				<reportElement style="TableCellStyle" x="0" y="0" width="555" height="30" uuid="39acc3a5-12cb-4a94-b3f6-c7f4a3388ea1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nenhum paciente encontrado.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

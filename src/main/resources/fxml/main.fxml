@@ -25,6 +25,7 @@
             <Button mnemonicParsing="false" onAction="#showCompararCidades" prefHeight="50.0" prefWidth="250.0" styleClass="menu-button" text="⚖ Comparar Cidades" />
             <Button mnemonicParsing="false" onAction="#showRelatorioGeral" prefHeight="50.0" prefWidth="250.0" styleClass="menu-button" text="📈 Relatório Geral" />
             <Button mnemonicParsing="false" onAction="#showListarCidades" prefHeight="50.0" prefWidth="250.0" styleClass="menu-button" text="🏢 Listar Cidades" />
+            <Button mnemonicParsing="false" onAction="#showGerarPdf" prefHeight="50.0" prefWidth="250.0" styleClass="menu-button" text="📄 Gerar Relatório PDF" />
          </children>
       </VBox>
    </left>

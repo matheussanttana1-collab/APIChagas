@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_comparativo_cidades_data" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	
+	<parameter name="CIDADE1_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIDADE2_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	
+	<queryString>
+		<![CDATA[SELECT
+    COALESCE(c1.data_coleta, c2.data_coleta) as data_coleta,
+    c1.casos_novos as c1_casos_novos,
+    c1.casos_confirmados as c1_confirmados,
+    c1.casos_suspeitos as c1_suspeitos,
+    c1.obitos as c1_obitos,
+    c1.recuperados as c1_recuperados,
+    c2.casos_novos as c2_casos_novos,
+    c2.casos_confirmados as c2_confirmados,
+    c2.casos_suspeitos as c2_suspeitos,
+    c2.obitos as c2_obitos,
+    c2.recuperados as c2_recuperados,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE1_ID} LIMIT 1) as cidade1_nome,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE2_ID} LIMIT 1) as cidade2_nome
+FROM coletas c1
+LEFT JOIN coletas c2 ON c1.data_coleta = c2.data_coleta AND c2.id_cidade = $P{CIDADE2_ID}
+WHERE c1.id_cidade = $P{CIDADE1_ID}
+
+UNION ALL
+
+SELECT
+    c2.data_coleta as data_coleta,
+    NULL as c1_casos_novos,
+    NULL as c1_confirmados,
+    NULL as c1_suspeitos,
+    NULL as c1_obitos,
+    NULL as c1_recuperados,
+    c2.casos_novos as c2_casos_novos,
+    c2.casos_confirmados as c2_confirmados,
+    c2.casos_suspeitos as c2_suspeitos,
+    c2.obitos as c2_obitos,
+    c2.recuperados as c2_recuperados,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE1_ID} LIMIT 1) as cidade1_nome,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE2_ID} LIMIT 1) as cidade2_nome
+FROM coletas c2
+LEFT JOIN coletas c1 ON c2.data_coleta = c1.data_coleta AND c1.id_cidade = $P{CIDADE1_ID}
+WHERE c2.id_cidade = $P{CIDADE2_ID} AND c1.id_coleta IS NULL
+
+ORDER BY data_coleta]]>
+	</queryString>
+	
+	<field name="data_coleta" class="java.sql.Date"/>
+	<field name="c1_casos_novos" class="java.lang.Integer"/>
+	<field name="c1_confirmados" class="java.lang.Integer"/>
+	<field name="c1_suspeitos" class="java.lang.Integer"/>
+	<field name="c1_obitos" class="java.lang.Integer"/>
+	<field name="c1_recuperados" class="java.lang.Integer"/>
+	<field name="c2_casos_novos" class="java.lang.Integer"/>
+	<field name="c2_confirmados" class="java.lang.Integer"/>
+	<field name="c2_suspeitos" class="java.lang.Integer"/>
+	<field name="c2_obitos" class="java.lang.Integer"/>
+	<field name="c2_recuperados" class="java.lang.Integer"/>
+	<field name="cidade1_nome" class="java.lang.String"/>
+	<field name="cidade2_nome" class="java.lang.String"/>
+
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	
+	<title>
+		<band height="60">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="60" backcolor="#1a3d5c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="10" width="802" height="40" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO COMPARATIVO ENTRE CIDADES POR DATA DE COLETA]]></text>
+			</staticText>
+		</band>
+	</title>
+
+	<pageHeader>
+		<band height="220">
+			<staticText>
+				<reportElement x="0" y="5" width="802" height="20" forecolor="#1a3d5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gráfico Comparativo: Casos Confirmados e Suspeitos por Data de Coleta]]></text>
+			</staticText>
+			
+			<lineChart>
+				<chart evaluationTime="Report">
+					<reportElement x="10" y="30" width="782" height="185"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Confirmados " + $F{cidade1_nome}]]></seriesExpression>
+						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM").format($F{data_coleta})]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c1_confirmados} != null ? $F{c1_confirmados} : 0]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Confirmados " + $F{cidade2_nome}]]></seriesExpression>
+						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM").format($F{data_coleta})]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c2_confirmados} != null ? $F{c2_confirmados} : 0]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Suspeitos " + $F{cidade1_nome}]]></seriesExpression>
+						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM").format($F{data_coleta})]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c1_suspeitos} != null ? $F{c1_suspeitos} : 0]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Suspeitos " + $F{cidade2_nome}]]></seriesExpression>
+						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM").format($F{data_coleta})]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c2_suspeitos} != null ? $F{c2_suspeitos} : 0]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="true"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</pageHeader>
+
+	<columnHeader>
+		<band height="50">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="50" backcolor="#1a3d5c"/>
+			</rectangle>
+			
+			<staticText>
+				<reportElement x="0" y="5" width="70" height="40" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Coleta]]></text>
+			</staticText>
+			
+			<textField>
+				<reportElement x="70" y="5" width="360" height="15" forecolor="#FFFFFF" backcolor="#0d1f2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade1_nome} != null ? $F{cidade1_nome}.toUpperCase() : "CIDADE 1"]]></textFieldExpression>
+			</textField>
+			
+			<staticText>
+				<reportElement x="70" y="20" width="35" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Novos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Susp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recup]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Óbito]]></text>
+			</staticText>
+			
+			<textField>
+				<reportElement x="430" y="5" width="360" height="15" forecolor="#FFFFFF" backcolor="#0d1f2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade2_nome} != null ? $F{cidade2_nome}.toUpperCase() : "CIDADE 2"]]></textFieldExpression>
+			</textField>
+			
+			<staticText>
+				<reportElement x="430" y="20" width="35" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Novos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Susp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recup]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="555" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Óbito]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+
+	<detail>
+		<band height="18">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="18" backcolor="#F5F5F5">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			
+			<textField>
+				<reportElement x="0" y="0" width="70" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{data_coleta})]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="70" y="0" width="35" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_casos_novos} != null ? $F{c1_casos_novos} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="0" width="30" height="18" forecolor="#C60C30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_confirmados} != null ? $F{c1_confirmados} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="0" width="30" height="18" forecolor="#FF8C00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_suspeitos} != null ? $F{c1_suspeitos} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_recuperados} != null ? $F{c1_recuperados} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="0" width="25" height="18" forecolor="#8B0000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_obitos} != null ? $F{c1_obitos} : 0]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="430" y="0" width="35" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_casos_novos} != null ? $F{c2_casos_novos} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="0" width="30" height="18" forecolor="#C60C30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_confirmados} != null ? $F{c2_confirmados} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="495" y="0" width="30" height="18" forecolor="#FF8C00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_suspeitos} != null ? $F{c2_suspeitos} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="525" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_recuperados} != null ? $F{c2_recuperados} : 0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="555" y="0" width="25" height="18" forecolor="#8B0000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_obitos} != null ? $F{c2_obitos} : 0]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+
+	<pageFooter>
+		<band height="20">
+			<line>
+				<reportElement x="0" y="0" width="802" height="1" forecolor="#1a3d5c"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="5" width="200" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gerado em: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="5" width="100" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+
+	<summary>
+		<band height="50">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="50" backcolor="#E8F0FE"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="5" width="700" height="40" forecolor="#1a3d5c"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Legenda: Novos=Casos Novos | Conf=Confirmados | Susp=Suspeitos | Recup=Recuperados | Óbito=Óbitos
+Este relatório compara os dados de coletas entre as duas cidades selecionadas, agrupados por data de coleta.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

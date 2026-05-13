@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_comparativo_cidades_idade" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	
+	<parameter name="CIDADE1_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIDADE2_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	
+	<queryString>
+		<![CDATA[SELECT
+    faixa_etaria,
+    ordem_faixa,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN total_pacientes ELSE 0 END) as c1_total,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN confirmados ELSE 0 END) as c1_confirmados,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN suspeitos ELSE 0 END) as c1_suspeitos,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN recuperados ELSE 0 END) as c1_recuperados,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN obitos ELSE 0 END) as c1_obitos,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN masculino ELSE 0 END) as c1_masculino,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN feminino ELSE 0 END) as c1_feminino,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN fase_aguda ELSE 0 END) as c1_aguda,
+    SUM(CASE WHEN id_cidade = $P{CIDADE1_ID} THEN fase_cronica ELSE 0 END) as c1_cronica,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN total_pacientes ELSE 0 END) as c2_total,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN confirmados ELSE 0 END) as c2_confirmados,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN suspeitos ELSE 0 END) as c2_suspeitos,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN recuperados ELSE 0 END) as c2_recuperados,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN obitos ELSE 0 END) as c2_obitos,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN masculino ELSE 0 END) as c2_masculino,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN feminino ELSE 0 END) as c2_feminino,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN fase_aguda ELSE 0 END) as c2_aguda,
+    SUM(CASE WHEN id_cidade = $P{CIDADE2_ID} THEN fase_cronica ELSE 0 END) as c2_cronica,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE1_ID}) as cidade1_nome,
+    (SELECT nome FROM cidades WHERE id_cidade = $P{CIDADE2_ID}) as cidade2_nome
+FROM
+(
+    SELECT
+        CASE
+            WHEN idade < 5 THEN '0-4 anos'
+            WHEN idade >= 5 AND idade <= 9 THEN '5-9 anos'
+            WHEN idade >= 10 AND idade <= 19 THEN '10-19 anos'
+            WHEN idade >= 20 AND idade <= 29 THEN '20-29 anos'
+            WHEN idade >= 30 AND idade <= 39 THEN '30-39 anos'
+            WHEN idade >= 40 AND idade <= 49 THEN '40-49 anos'
+            WHEN idade >= 50 AND idade <= 59 THEN '50-59 anos'
+            WHEN idade >= 60 AND idade <= 69 THEN '60-69 anos'
+            WHEN idade >= 70 THEN '70+ anos'
+            ELSE 'Sem informação'
+        END as faixa_etaria,
+        CASE
+            WHEN idade < 5 THEN 1
+            WHEN idade >= 5 AND idade <= 9 THEN 2
+            WHEN idade >= 10 AND idade <= 19 THEN 3
+            WHEN idade >= 20 AND idade <= 29 THEN 4
+            WHEN idade >= 30 AND idade <= 39 THEN 5
+            WHEN idade >= 40 AND idade <= 49 THEN 6
+            WHEN idade >= 50 AND idade <= 59 THEN 7
+            WHEN idade >= 60 AND idade <= 69 THEN 8
+            WHEN idade >= 70 THEN 9
+            ELSE 10
+        END as ordem_faixa,
+        id_cidade,
+        COUNT(*) as total_pacientes,
+        SUM(CASE WHEN status_paciente='CONFIRMADO' THEN 1 ELSE 0 END) as confirmados,
+        SUM(CASE WHEN status_paciente='SUSPEITO' THEN 1 ELSE 0 END) as suspeitos,
+        SUM(CASE WHEN status_paciente='RECUPERADO' THEN 1 ELSE 0 END) as recuperados,
+        SUM(CASE WHEN status_paciente='OBITO' THEN 1 ELSE 0 END) as obitos,
+        SUM(CASE WHEN sexo='M' THEN 1 ELSE 0 END) as masculino,
+        SUM(CASE WHEN sexo='F' THEN 1 ELSE 0 END) as feminino,
+        SUM(CASE WHEN fase_doenca='AGUDA' THEN 1 ELSE 0 END) as fase_aguda,
+        SUM(CASE WHEN fase_doenca='CRONICA' THEN 1 ELSE 0 END) as fase_cronica
+    FROM pacientes
+    WHERE id_cidade IN ($P{CIDADE1_ID}, $P{CIDADE2_ID})
+    GROUP BY faixa_etaria, ordem_faixa, id_cidade
+) dados
+GROUP BY faixa_etaria, ordem_faixa
+ORDER BY ordem_faixa]]>
+	</queryString>
+	
+	<field name="faixa_etaria" class="java.lang.String"/>
+	<field name="ordem_faixa" class="java.lang.Integer"/>
+	<field name="c1_total" class="java.lang.Long"/>
+	<field name="c1_confirmados" class="java.lang.Long"/>
+	<field name="c1_suspeitos" class="java.lang.Long"/>
+	<field name="c1_recuperados" class="java.lang.Long"/>
+	<field name="c1_obitos" class="java.lang.Long"/>
+	<field name="c1_masculino" class="java.lang.Long"/>
+	<field name="c1_feminino" class="java.lang.Long"/>
+	<field name="c1_aguda" class="java.lang.Long"/>
+	<field name="c1_cronica" class="java.lang.Long"/>
+	<field name="c2_total" class="java.lang.Long"/>
+	<field name="c2_confirmados" class="java.lang.Long"/>
+	<field name="c2_suspeitos" class="java.lang.Long"/>
+	<field name="c2_recuperados" class="java.lang.Long"/>
+	<field name="c2_obitos" class="java.lang.Long"/>
+	<field name="c2_masculino" class="java.lang.Long"/>
+	<field name="c2_feminino" class="java.lang.Long"/>
+	<field name="c2_aguda" class="java.lang.Long"/>
+	<field name="c2_cronica" class="java.lang.Long"/>
+	<field name="cidade1_nome" class="java.lang.String"/>
+	<field name="cidade2_nome" class="java.lang.String"/>
+
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	
+	<title>
+		<band height="60">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="60" backcolor="#1a3d5c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="10" width="802" height="40" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO COMPARATIVO ENTRE CIDADES POR FAIXA ETÁRIA]]></text>
+			</staticText>
+		</band>
+	</title>
+
+	<pageHeader>
+		<band height="220">
+			<staticText>
+				<reportElement x="0" y="5" width="802" height="20" forecolor="#1a3d5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gráfico Comparativo: Confirmados e Suspeitos por Faixa Etária]]></text>
+			</staticText>
+			
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="10" y="30" width="782" height="185"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Confirmados C1"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{faixa_etaria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c1_confirmados}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Confirmados C2"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{faixa_etaria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c2_confirmados}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Suspeitos C1"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{faixa_etaria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c1_suspeitos}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Suspeitos C2"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{faixa_etaria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{c2_suspeitos}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="false"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</pageHeader>
+
+	<columnHeader>
+		<band height="50">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="50" backcolor="#1a3d5c"/>
+			</rectangle>
+			
+			<staticText>
+				<reportElement x="0" y="5" width="60" height="40" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Faixa Etária]]></text>
+			</staticText>
+			
+			<textField>
+				<reportElement x="60" y="5" width="370" height="15" forecolor="#FFFFFF" backcolor="#0d1f2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade1_nome}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			
+			<staticText>
+				<reportElement x="60" y="20" width="35" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="125" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Susp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recup]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Óbito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Masc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aguda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="20" width="40" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Crônica]]></text>
+			</staticText>
+			
+			<textField>
+				<reportElement x="430" y="5" width="370" height="15" forecolor="#FFFFFF" backcolor="#0d1f2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade2_nome}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			
+			<staticText>
+				<reportElement x="430" y="20" width="35" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Susp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recup]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="555" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Óbito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Masc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="605" y="20" width="25" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="20" width="30" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aguda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="660" y="20" width="40" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Crônica]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+
+	<detail>
+		<band height="18">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="18" backcolor="#F5F5F5">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			
+			<textField>
+				<reportElement x="0" y="0" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{faixa_etaria}]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="60" y="0" width="35" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="0" width="30" height="18" forecolor="#C60C30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_confirmados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="0" width="30" height="18" forecolor="#FF8C00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_suspeitos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_recuperados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="25" height="18" forecolor="#8B0000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_obitos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="25" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_masculino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="235" y="0" width="25" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_feminino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_aguda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="40" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1_cronica}]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="430" y="0" width="35" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="0" width="30" height="18" forecolor="#C60C30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_confirmados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="495" y="0" width="30" height="18" forecolor="#FF8C00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_suspeitos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="525" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_recuperados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="555" y="0" width="25" height="18" forecolor="#8B0000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_obitos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="25" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_masculino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="0" width="25" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_feminino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="630" y="0" width="30" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_aguda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="660" y="0" width="40" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2_cronica}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+
+	<pageFooter>
+		<band height="20">
+			<line>
+				<reportElement x="0" y="0" width="802" height="1" forecolor="#1a3d5c"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="5" width="200" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gerado em: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="5" width="100" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+
+	<summary>
+		<band height="50">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="50" backcolor="#E8F0FE"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="5" width="700" height="40" forecolor="#1a3d5c"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Legenda: Conf=Confirmados | Susp=Suspeitos | Recup=Recuperados | Masc=Masculino | Fem=Feminino | Aguda=Fase Aguda | Crônica=Fase Crônica
+Este relatório compara os dados epidemiológicos de Doença de Chagas entre as duas cidades selecionadas, agrupados por faixa etária.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
